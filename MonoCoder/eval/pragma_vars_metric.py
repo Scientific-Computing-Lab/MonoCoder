@@ -5,7 +5,7 @@ import seaborn as sns
 import json
 
 
-def evaluate_omp(output_file='../compcoder_results.log'):
+def evaluate_omp(output_file='../monocoder_results.log'):
     '''
     Evaluate inner-clause level classification
     '''

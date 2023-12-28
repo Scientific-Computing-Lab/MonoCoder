@@ -7,9 +7,7 @@ import numpy
 import torch
 import copy
 import json
-
-sys.path.append("../../tokenizer")
-from tokompiler.lexicalization import lexicalize
+from tokenizer.tokompiler.lexicalization import lexicalize
 
 
 def pragma2dict(pragma):
@@ -44,15 +42,14 @@ def pragma2dict(pragma):
 
 def pragma2str(pragma):
     '''
-    {private: {vars: [var_501]}} -> do private ( var_501 )
+    {private: {vars: [var_501]}} -> do private(var_501)
     '''
-    result = ''
+    result = 'parallel'
 
-    for clause, inner_clause in pragma.items():
-        if clause == 'private':
-            result += f"private ( {', '.join(inner_clause['vars'])} )"
-        if clause == 'reduction':
-            result += f"reduction ( {inner_clause['operator']} : {', '.inner_clause['vars'])} )"
+    result += f" || private {' '.join(pragma['private']['vars']) if 'private' in pragma else ''}"
+    result += f" || reduction {pragma['reduction']['operator']+' : '+' '.join(pragma['reduction']['vars'])  if 'reduction' in pragma else ''} ||"
+
+    return result
 
 
 def remove_pragma(code):
@@ -124,20 +121,19 @@ def build_omp_dataset(args, rebuild=False):
             if args.is_replaced:
                 pragma = pragma.replace('_', ' ')
 
+            if args.is_replaced:
+                sep_token = '[SEP]'
+                eos_token = '[EOS]'
+            else:
+                sep_token = '\n'
+                eos_token = '' # eos equals to padding - appended it at tokenization
+
             if args.do_test:
                 code = code
-                example["full"] = code
+                example["full"] = f'{code}{sep_token}parallel'
                 example["label"] = pragma
             else:
-
-                if args.is_replaced:
-                    sep_token = '[SEP]'
-                    eos_token = '[EOS]'
-                else:
-                    sep_token = '\n'
-                    eos_token = '' # eos equals to padding - appended it at tokenization
-
-                example["full"] = f'{code} {sep_token} parallel {pragma} {eos_token}'
+                example["full"] = f'{code}{sep_token}{pragma}{eos_token}'
 
             return example
 

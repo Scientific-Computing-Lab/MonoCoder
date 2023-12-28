@@ -29,9 +29,9 @@ if __name__=='__main__':
 
     # Data arguments
     parser.add_argument('-t', '--tokenizer_type', type=str, choices=['GPT2BPETokenizer', 'Tokompiler', 'HFGPT2Tokenizer'], default='HFGPT2Tokenizer')
-    parser.add_argument('-v', '--vocab_file', type=str, default='../../../megatron/tokenizer/gpt_vocab/gpt2-vocab.json')
-    parser.add_argument('-m', '--merge_file', type=str, default='../../../megatron/tokenizer/gpt_vocab/gpt2-merges.txt')
-    parser.add_argument('-d', '--data_path', type=str, default=f'{os.path.expanduser("~")}/LIGHTBITS_SHARE/OMP_Dataset')
+    parser.add_argument('-v', '--vocab_file', type=str, default='tokenizer/gpt/gpt_vocab/gpt2-vocab.json')
+    parser.add_argument('-m', '--merge_file', type=str, default='tokenizer/gpt/gpt_vocab/gpt2-merges.txt')
+    parser.add_argument('-d', '--data_path', type=str, default=f'{os.path.expanduser("~")}/LIGHTBITS_SHARE/MonoCoder/data/OMP_Dataset')
     parser.add_argument('--data_device', default='cpu', choices=['cpu', 'gpu', 'mixed'])
     parser.add_argument('--is_replaced', action='store_true')
     parser.add_argument('--data_filename', type=str)
