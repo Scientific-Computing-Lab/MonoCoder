@@ -18,6 +18,8 @@ The `MonoCoder` directory contains two self-contained scripts that demonstrate t
 
 2. **`test.sh`**: Use this script to regenerate results on the test split. It provides code for running the model on the test data.
 
+## Usage
+
 ### Hugging Face Model
 The trained model is uploaded to Hugging Face and can be easily utilized in your own projects. Here's an example of how to use it in Python:
 
@@ -26,4 +28,16 @@ from transformers import GPTNeoXForCausalLM, GPT2Tokenizer
 
 tokenizer = GPT2Tokenizer(vocab_file=args.vocab_file, merges_file=args.merge_file, model_input_names=['input_ids'])
 model = GPTNeoXForCausalLM.from_pretrained('MonoCoder/MonoCoder_OMP')
+```
+### Google Drive
+
+In addition, the models can be provided on demand using the following link: [Model Drive Folder](https://drive.google.com/drive/folders/12nExG-W2egEZGaUAhkz0vXfL4p33clZo?usp=share_link).
+
+When downloading a model folder, you can easily load it using the following Python code:
+
+```python
+import os
+from transformers import GPTNeoXForCausalLM
+
+model = GPTNeoXForCausalLM.from_pretrained(os.path.join(args.models_dir, args.model_name))
 ```
